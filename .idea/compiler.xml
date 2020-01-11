@@ -9,6 +9,8 @@
         <module name="zabawazoptional" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="zabawazoptional" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,29 +1,23 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class Main {
+    
+    Map<String, Integer> klienci = new HashMap<>();
 
-    private Map<String, Integer> klienci = new HashMap<>();
+    public  Boolean sprawdzPotencjalZakupowy(String imieOsoby, int cenaProduktu) {
+        Optional<Integer> opt = Optional.ofNullable(klienci.get(imieOsoby));
+        Function<Integer, Boolean> kupiDziesiec = x -> x >= 10;
+        return
+                opt.filter(i -> i >= cenaProduktu)
+                        .map(i -> i/cenaProduktu)
+                        .map(i -> kupiDziesiec.apply(i))
+                        .orElseThrow(() -> new RuntimeException("Osoba nie istnieje lub jest zbyt biedna"));
 
-    public Optional<Boolean> sprawdzPotencjalZakupowy(String imieOsoby, int cenaProduktu) {
-        int zawartoscPortfela;
-        int maxNumberOfProducts;
-        Optional<Boolean> potencjalIstnieje = Optional.empty();
-
-        for (Map.Entry<String, Integer> element : klienci.entrySet()) {
-            //System.out.printf("%s - %s%n",element.getKey(), element.getValue());
-            if (element.getKey() == imieOsoby && element.getValue() >= cenaProduktu) {
-                zawartoscPortfela = element.getValue();
-                maxNumberOfProducts = zawartoscPortfela / cenaProduktu;
-                //System.out.printf("!!%s - %s max: %s%n",element.getKey(), zawartoscPortfela, maxNumberOfProducts);
-                if (maxNumberOfProducts >= 10) {
-                    potencjalIstnieje = Optional.of(true);
-                }
-            }
-        }
-        return Optional.of(potencjalIstnieje.orElseThrow(()-> new RuntimeException("Osoba nie istnieje lub jest zbyt biedna")));
     }
+
 
     public static void main(String[] args) {
 
@@ -36,9 +30,10 @@ public class Main {
         map.klienci.put("Piotr", 5000);
         map.klienci.put("Ala", 0);
 
-        //System.out.println(map.sprawdzPotencjalZakupowy("Wacek", 250));
+        System.out.println(map.sprawdzPotencjalZakupowy("Wacek", 30));
+       // System.out.println(map.sprawdzPotencjalZakupowy("Wacek", 35));
+       // System.out.println(map.sprawdzPotencjalZakupowy("Wacek1", 30));
 
-        System.out.println(map.sprawdzPotencjalZakupowy("Piotr", 250));
     }
 
 
